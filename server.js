@@ -4,6 +4,14 @@ const morgan = require("morgan");
 var server = express();
 server.use(morgan("dev"));
 
+server.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  else return next();
+});
+
 server.use("/", require("./routes/public"));
 
 // Catch 404 and forward to error handler
