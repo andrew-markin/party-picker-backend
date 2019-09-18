@@ -1,0 +1,13 @@
+{
+  "name": "party-picker-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node -r dotenv/config server"
+  },
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1"
+  }
+}
