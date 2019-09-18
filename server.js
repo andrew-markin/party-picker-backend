@@ -22,7 +22,7 @@ server.use(function(err, _req, res, _next) {
   });
 });
 
-server.listen(process.env.PORT || 3000, function(err) {
+server.listen(process.env["app_port"] || process.env.PORT || 3000, function(err) {
   if (err) {
     console.error("Unable to start server", err.message);
     process.exit(2);
