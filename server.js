@@ -41,23 +41,26 @@ server.use(function(err, _req, res, _next) {
 
 // Start application
 
-var mongooseConnectOptions = {
-  reconnectTries: Number.MAX_VALUE,
-  reconnectInterval: 500,
-  socketTimeoutMS: 0,
-  keepAlive: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+const mongooseConnect = {
+  url: process.env['mongodb'] || process.env.MONGODB_URL,
+  options: {
+    reconnectTries: Number.MAX_VALUE,
+    reconnectInterval: 500,
+    socketTimeoutMS: 0,
+    keepAlive: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  },
 };
 
 if (process.env.MONGODB_USER && process.env.MONGODB_PASSWORD) {
-  mongooseConnectOptions.auth = {
-    user: process.env.MONGODB_USER,
-    password: process.env.MONGODB_PASSWORD
+  mongooseConnect.options.auth = {
+    user: process.env['DBUSER'] || process.env.MONGODB_USER,
+    password: process.env['DBPWD'] || process.env.MONGODB_PASSWORD
   };
-}
+};
 
-mongoose.connect(process.env.MONGODB_URL, mongooseConnectOptions, function(err, db) {
+mongoose.connect(mongooseConnect.url, mongooseConnect.options, function(err, db) {
   if (err) {
     console.error('Unable to connect database:', err.message);
     return process.exit(1);
