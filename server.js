@@ -48,6 +48,7 @@ const mongooseConnect = {
     reconnectInterval: 500,
     socketTimeoutMS: 0,
     keepAlive: true,
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
   },
