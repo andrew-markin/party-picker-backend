@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/users');
 
+const BCRYPT_SALT_ROUNDS = 10;
+
 const authorize = function(user, cb) {
   jwt.sign({ 
     id: user._id,
@@ -19,15 +21,18 @@ const authorize = function(user, cb) {
 };
 
 const register = function(req, cb) {
-  User.create({
-    username: req.username,
-    password: req.password
-  }, function (err, user) {
-    if (err) {
-      if (err.code !== 11000) return cb(err); 
-      return cb(null, { success: false }); // Username exists
-    }
-    authorize(user, cb);
+  bcrypt.hash(req.password, BCRYPT_SALT_ROUNDS, function(err, hash) {
+    if (err) return next(err);
+    User.create({
+      username: req.username,
+      password: hash
+    }, function (err, user) {
+      if (err) {
+        if (err.code !== 11000) return cb(err); 
+        return cb(null, { success: false }); // Username exists
+      }
+      authorize(user, cb);
+    });
   });
 };
 
