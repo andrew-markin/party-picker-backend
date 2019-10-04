@@ -1,14 +1,16 @@
 const bcrypt = require('bcryptjs'); 
 const jwt = require('jsonwebtoken');
 
-const User = require('../models/users');
+const User = require('../models/user');
 
 const BCRYPT_SALT_ROUNDS = 10;
 
-const authorize = function(user, cb) {
+const noop = function() {};
+
+const authorize = function(user, cb = noop) {
   jwt.sign({ 
     id: user._id,
-    username: user.username
+    name: user.name
   }, process.env.JWT_SECRET, { 
     expiresIn: '1h' 
   }, function(err, token) {
@@ -20,26 +22,24 @@ const authorize = function(user, cb) {
   });
 };
 
-const register = function(req, cb) {
+const register = function(req, cb = noop) {
   bcrypt.hash(req.password, BCRYPT_SALT_ROUNDS, function(err, hash) {
     if (err) return next(err);
     User.create({
-      username: req.username,
+      name: req.name,
       password: hash
     }, function (err, user) {
       if (err) {
         if (err.code !== 11000) return cb(err); 
-        return cb(null, { success: false }); // Username exists
+        return cb(null, { success: false }); // User name exists
       }
       authorize(user, cb);
     });
   });
 };
 
-const authenticate = function(req, cb) {
-  User.findOne({
-    username: req.username
-  }, function(err, user) {
+const authenticate = function(req, cb = noop) {
+  User.findOne({ name: req.name }, function(err, user) {
     if (err) return cb(err);
     if (!user) return cb(null, { success: false });
     bcrypt.compare(req.password, user.password, function(err, matched) {

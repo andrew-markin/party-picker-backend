@@ -1,11 +1,11 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-const morgan = require('morgan');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 
 const server = express();
 server.use(morgan('dev'));
-server.use(bodyParser.json());
 
 server.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -15,7 +15,23 @@ server.use(function(req, res, next) {
   else return next();
 });
 
+// Body parsing
+server.use(bodyParser.json());
+
+// Authorization check
+server.use(function(req, _res, next) {
+  if (!req.headers.authorization) return next();
+  jwt.verify(req.headers.authorization, process.env.JWT_SECRET, function(err, decoded) {
+    if (!err && decoded) {
+      req.userId = decoded.id;
+      req.userName = decoded.name;
+    }
+    next();
+  });
+});
+
 server.use('/', require('./routes/public'));
+server.use('/', require('./routes/private'));
 
 // Favicon request handler
 server.get('/favicon.ico', function(_req, res) {
