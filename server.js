@@ -58,8 +58,8 @@ server.use(function(err, _req, res, _next) {
 // Start application
 
 mongoose.connect(process.env['mongodb'] || process.env.MONGODB, {
-  reconnectTries: Number.MAX_VALUE,
-  reconnectInterval: 500,
+  // reconnectTries: Number.MAX_VALUE,
+  // reconnectInterval: 500,
   socketTimeoutMS: 0,
   keepAlive: true,
   useCreateIndex: true,
