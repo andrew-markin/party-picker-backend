@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 var PropositionSchema = new mongoose.Schema({
   party: {
@@ -9,11 +9,11 @@ var PropositionSchema = new mongoose.Schema({
   day: {
     type: Number,
     required: true
-  }, 
-  acceptors: [ String ],
-  rejectors: [ String ]
-});
+  },
+  acceptors: [String],
+  rejectors: [String]
+})
 
-PropositionSchema.index({ party: 1, day: 1 }, { unique: true });
+PropositionSchema.index({ party: 1, day: 1 }, { unique: true })
 
-module.exports = mongoose.model('Proposition', PropositionSchema);
+module.exports = mongoose.model('Proposition', PropositionSchema)

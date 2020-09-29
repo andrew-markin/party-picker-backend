@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const uuidv4 = require('uuid/v4');
+const mongoose = require('mongoose')
+const uuidv4 = require('uuid/v4')
 
 var PartySchema = new mongoose.Schema({
   _id: {
@@ -11,6 +11,6 @@ var PartySchema = new mongoose.Schema({
     required: true,
     trim: true
   }
-});
+})
 
-module.exports = mongoose.model('Party', PartySchema);
+module.exports = mongoose.model('Party', PartySchema)

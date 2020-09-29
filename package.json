@@ -15,5 +15,9 @@
     "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-standard": "^14.1.1"
   }
 }
